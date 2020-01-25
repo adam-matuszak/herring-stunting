@@ -1,15 +1,51 @@
 Karłowacenie Śledzi
 ================
 Adam Matuszak
-25 styczeń, 2020
+25 January, 2020
 
 ## Wyniki analizy
+
+Analiza dostępnych danych wykazała, że nie da się wykazać ścisłej
+relacji pomiędzy jednym atrybutem, a wielkością śledzi. Na wykresie
+zmiany wielkosci śledzi w czasie można zaobserwować, że karłowatość
+objawiała się wcześniej. Na przestrzeni zbadanych 60 lat wielkość śledzi
+rosła, by po inicjalnym okresie wzrostu zaczą maleć. W efekcie końcowym
+wielkość śledzi jest mniejsza niż na początku prowadzenia badań. Można
+jednak zauważyć tendencję wzrostowom w ramch ostatnich połowów.
 
 ## Wykorzystane biblioteki
 
 ``` r
 library(ggplot2)
+library(corrplot)
 ```
+
+    ## corrplot 0.84 loaded
+
+``` r
+library(plotly)
+```
+
+    ## 
+    ## Attaching package: 'plotly'
+
+    ## The following object is masked from 'package:ggplot2':
+    ## 
+    ##     last_plot
+
+    ## The following object is masked from 'package:stats':
+    ## 
+    ##     filter
+
+    ## The following object is masked from 'package:graphics':
+    ## 
+    ##     layout
+
+``` r
+library(caret) 
+```
+
+    ## Loading required package: lattice
 
 ## Powtarzalność danych
 
@@ -118,6 +154,8 @@ clear <- na.omit(df)
 
 ## Korelację pomiędzy atrybutami
 
+### Korelacja pomiędzy wielkością a pozostałymi atrybutami
+
     ##       cfin1       cfin2       chel1       chel2       lcop1       lcop2 
     ##  0.08122553  0.09832515  0.22091226 -0.01430766  0.23775402  0.04894328 
     ##        fbar        recr        cumf      totaln         sst         sal 
@@ -125,16 +163,19 @@ clear <- na.omit(df)
     ##      xmonth         nao 
     ##  0.01371195 -0.25684475
 
-## Zmiana rozmiarów śledzi w czasie
+### Macierz korelacji wszystkich atrybutów
 
 ``` r
-ggplot(data=clear[,c(1,2)], aes(x=X, y=length)) +
-  geom_smooth()
+corrplot(Matrix, method = "square")
 ```
+
+![](raport_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+
+## Zmiana rozmiarów śledzi w czasie
 
     ## `geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
 
-![](raport_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+![](raport_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
 ## Prognoza rozmiarów śledzi
 
