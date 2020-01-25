@@ -9,14 +9,142 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+## Wyniki analizy
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+## Wykorzystane biblioteki
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+```{r}
+library(ggplot2)
+```
 
-```{r cars}
-summary(cars)
+## Powtarzalność danych
+
+```{r}
+set.seed(1)
+```
+
+## Wczytanie danych
+
+Wczytanie daych odbywa się poprzez załadowanie informacji z pliku sledzie.csv. Plik ten jest załączony do repozytorium.
+
+```{r}
+data = read.csv("sledzie.csv", TRUE, sep = ',')
+```
+
+## Czeyszczenie zbioru
+
+Czyszczenie zbioru przebiega na zasadzie zamienienia symboli ? występujących w pliku na wartość NA. Następnie tworzymy nowy zbiór, w którym pomijamy wszystkie rekordy posiadające w którejkolwiek kolumnie wartość NA. Po wykoaniu tej operacji należy przekonwertować typy kolumn na numeryczne. 
+
+```{r}
+data[data=="?"]<-NA
+df <- na.omit(data)
+cols.num <- c("cfin1","cfin2","chel1","chel2","lcop1","lcop2","sst")
+df[cols.num] <- sapply(df[cols.num],function(x) as.numeric(as.character(x)))
+clear <- na.omit(df)
+```
+
+## Charaktrystyki zbioru
+
+### Kolumny
+```{r ,echo=FALSE}
+colnames(clear)
+```
+
+* X: liczba porządkowa;
+* length: długość złowionego śledzia [cm];
+* cfin1: dostępność planktonu [zagęszczenie Calanus finmarchicus gat. 1];
+* cfin2: dostępność planktonu [zagęszczenie Calanus finmarchicus gat. 2];
+* chel1: dostępność planktonu [zagęszczenie Calanus helgolandicus gat. 1];
+* chel2: dostępność planktonu [zagęszczenie Calanus helgolandicus gat. 2];
+* lcop1: dostępność planktonu [zagęszczenie widłonogów gat. 1];
+* lcop2: dostępność planktonu [zagęszczenie widłonogów gat. 2];
+* fbar: natężenie połowów w regionie [ułamek pozostawionego narybku];
+* recr: roczny narybek [liczba śledzi];
+* cumf: łączne roczne natężenie połowów w regionie [ułamek pozostawionego narybku];
+* totaln: łączna liczba ryb złowionych w ramach połowu [liczba śledzi];
+* sst: temperatura przy powierzchni wody [°C];
+* sal: poziom zasolenia wody [Knudsen ppt];
+* xmonth: miesiąc połowu [numer miesiąca];
+* nao: oscylacja północnoatlantycka [mb].
+
+### Wielkość zbioru przed wyczyszczeniem danych
+```{r ,echo=FALSE}
+nrow(data)
+```
+
+### Wielkość zbioru po wyczyszczeniem danych
+```{r ,echo=FALSE}
+nrow(clear)
+```
+
+### Analiza wartości poszczególnych kolumn czystego zbioru
+```{r ,echo=FALSE}
+summary(clear[,-1])
+```
+
+## Analiza atrybutów
+
+```{r ,echo=FALSE}
+hist(clear$length, col="grey", main = "Rozkład wartości dla atrybutu length", xlab = "length", ylab = "Występowanie")
+hist(clear$cfin1, col="grey", main = "Rozkład wartości dla atrybutu cfin1", xlab = "cfin1", ylab = "Występowanie")
+hist(clear$cfin2, col="grey", main = "Rozkład wartości dla atrybutu cfin2", xlab = "cfin2", ylab = "Występowanie")
+hist(clear$chel1, col="grey", main = "Rozkład wartości dla atrybutu chel1", xlab = "chel1", ylab = "Występowanie")
+hist(clear$chel2, col="grey", main = "Rozkład wartości dla atrybutu chel2", xlab = "chel2", ylab = "Występowanie")
+hist(clear$lcop1, col="grey", main = "Rozkład wartości dla atrybutu lcop1", xlab = "lcop1", ylab = "Występowanie")
+hist(clear$lcop2, col="grey", main = "Rozkład wartości dla atrybutu lcop2", xlab = "lcop2", ylab = "Występowanie")
+hist(clear$fbar, col="grey", main = "Rozkład wartości dla atrybutu fbar", xlab = "fbar", ylab = "Występowanie")
+hist(clear$recr, col="grey", main = "Rozkład wartości dla atrybutu recr", xlab = "recr", ylab = "Występowanie")
+hist(clear$cumf, col="grey", main = "Rozkład wartości dla atrybutu cumf", xlab = "cumf", ylab = "Występowanie")
+hist(clear$totaln, col="grey", main = "Rozkład wartości dla atrybutu totaln", xlab = "totaln", ylab = "Występowanie")
+hist(clear$sst, col="grey", main = "Rozkład wartości dla atrybutu sst", xlab = "sst", ylab = "Występowanie")
+hist(clear$sal, col="grey", main = "Rozkład wartości dla atrybutu sal", xlab = "sal", ylab = "Występowanie")
+hist(clear$xmonth, col="grey", main = "Rozkład wartości dla atrybutu xmonth", xlab = "xmonth", ylab = "Występowanie")
+hist(clear$nao, col="grey", main = "Rozkład wartości dla atrybutu nao", xlab = "nao", ylab = "Występowanie")
+```
+
+## Korelację pomiędzy atrybutami
+
+```{r ,echo=FALSE}
+
+v = c(
+  cor(clear$length,clear$cfin1),
+  cor(clear$length,clear$cfin2),
+  cor(clear$length,clear$chel1),
+  cor(clear$length,clear$chel2),
+  cor(clear$length,clear$lcop1),
+  cor(clear$length,clear$lcop2),
+  cor(clear$length,clear$fbar),
+  cor(clear$length,clear$recr),
+  cor(clear$length,clear$cumf),
+  cor(clear$length,clear$totaln),
+  cor(clear$length,clear$sst),
+  cor(clear$length,clear$sal),
+  cor(clear$length,clear$xmonth),
+  cor(clear$length,clear$nao)
+) 
+
+names(v) = c("cfin1", "cfin2", "chel1", "chel2", "lcop1", "lcop2", "fbar", "recr", "cumf", "totaln", "sst", "sal", "xmonth", "nao")
+
+v
+```
+
+## Zmiana rozmiarów śledzi w czasie
+
+```{r ,echo=FALSE}
+ggplot(data=clear[,c(1,2)], aes(x=X, y=length)) +
+  geom_smooth()
+```
+
+## Prognoza rozmiarów śledzi
+
+```{r}
+
+```
+
+## Analiza modelu regresji
+
+```{r}
+
 ```
 
 ## Including Plots
