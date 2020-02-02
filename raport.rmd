@@ -10,11 +10,15 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Wyniki analizy
+Analiza dostępnych danych wykazała, że nie da się wykazać ścisłej relacji pomiędzy jednym atrybutem, a wielkością śledzi. Na wykresie zmiany wielkosci śledzi w czasie można zaobserwować, że karłowatość objawiała się wcześniej. Na przestrzeni zbadanych 60 lat wielkość śledzi rosła, by po inicjalnym okresie wzrostu zaczą maleć. W efekcie końcowym wielkość śledzi jest mniejsza niż na początku prowadzenia badań. Można jednak zauważyć tendencję wzrostowom w ramch ostatnich połowów. 
 
 ## Wykorzystane biblioteki
 
 ```{r}
 library(ggplot2)
+library(corrplot)
+library(plotly)
+library(caret) 
 ```
 
 ## Powtarzalność danych
@@ -104,9 +108,14 @@ boxplot(clear$nao, main = "Rozkład wartości dla atrybutu nao", horizontal=TRUE
 
 ## Korelację pomiędzy atrybutami
 
+<<<<<<< HEAD
 Korelacja pomiędzy poszczególnymi atrybutami, a długością śledzia
 
+=======
+### Korelacja pomiędzy wielkością a pozostałymi atrybutami
+>>>>>>> 2978667f2ba129197eddccc496c026d579f576c0
 ```{r ,echo=FALSE}
+Matrix <- cor(clear)
 
 v = c(
   cor(clear$length,clear$cfin1),
@@ -130,7 +139,15 @@ names(v) = c("cfin1", "cfin2", "chel1", "chel2", "lcop1", "lcop2", "fbar", "recr
 v
 ```
 
+<<<<<<< HEAD
 Największą wartość bezwzględną posiada korelacja pomiędzy długością śledzia, a temperaturą przy powierzchni. Według badania te wartości są skorelowane ujemnie, a stopień korelacji jest słaby.
+=======
+### Macierz korelacji wszystkich atrybutów
+
+```{r}
+corrplot(Matrix, method = "square")
+```
+>>>>>>> 2978667f2ba129197eddccc496c026d579f576c0
 
 ## Zmiana rozmiarów śledzi w czasie
 

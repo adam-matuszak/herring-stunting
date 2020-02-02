@@ -1,15 +1,55 @@
 Karłowacenie Śledzi
 ================
 Adam Matuszak
+<<<<<<< HEAD
 02 luty, 2020
+=======
+25 January, 2020
+>>>>>>> 2978667f2ba129197eddccc496c026d579f576c0
 
 ## Wyniki analizy
+
+Analiza dostępnych danych wykazała, że nie da się wykazać ścisłej
+relacji pomiędzy jednym atrybutem, a wielkością śledzi. Na wykresie
+zmiany wielkosci śledzi w czasie można zaobserwować, że karłowatość
+objawiała się wcześniej. Na przestrzeni zbadanych 60 lat wielkość śledzi
+rosła, by po inicjalnym okresie wzrostu zaczą maleć. W efekcie końcowym
+wielkość śledzi jest mniejsza niż na początku prowadzenia badań. Można
+jednak zauważyć tendencję wzrostowom w ramch ostatnich połowów.
 
 ## Wykorzystane biblioteki
 
 ``` r
 library(ggplot2)
+library(corrplot)
 ```
+
+    ## corrplot 0.84 loaded
+
+``` r
+library(plotly)
+```
+
+    ## 
+    ## Attaching package: 'plotly'
+
+    ## The following object is masked from 'package:ggplot2':
+    ## 
+    ##     last_plot
+
+    ## The following object is masked from 'package:stats':
+    ## 
+    ##     filter
+
+    ## The following object is masked from 'package:graphics':
+    ## 
+    ##     layout
+
+``` r
+library(caret) 
+```
+
+    ## Loading required package: lattice
 
 ## Powtarzalność danych
 
@@ -118,7 +158,11 @@ clear <- na.omit(df)
 
 ## Korelację pomiędzy atrybutami
 
+<<<<<<< HEAD
 Korelacja pomiędzy poszczególnymi atrybutami, a długością śledzia
+=======
+### Korelacja pomiędzy wielkością a pozostałymi atrybutami
+>>>>>>> 2978667f2ba129197eddccc496c026d579f576c0
 
     ##       cfin1       cfin2       chel1       chel2       lcop1       lcop2 
     ##  0.08122553  0.09832515  0.22091226 -0.01430766  0.23775402  0.04894328 
@@ -127,11 +171,22 @@ Korelacja pomiędzy poszczególnymi atrybutami, a długością śledzia
     ##      xmonth         nao 
     ##  0.01371195 -0.25684475
 
-## Zmiana rozmiarów śledzi w czasie
+### Macierz korelacji wszystkich atrybutów
 
-    ## `geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
+<<<<<<< HEAD
+=======
+``` r
+corrplot(Matrix, method = "square")
+```
 
 ![](raport_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+
+## Zmiana rozmiarów śledzi w czasie
+
+>>>>>>> 2978667f2ba129197eddccc496c026d579f576c0
+    ## `geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
+
+![](raport_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
 ## Prognoza rozmiarów śledzi
 
