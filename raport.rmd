@@ -85,24 +85,26 @@ summary(clear[,-1])
 ## Analiza atrybutów
 
 ```{r ,echo=FALSE}
-hist(clear$length, col="grey", main = "Rozkład wartości dla atrybutu length", xlab = "length", ylab = "Występowanie")
-hist(clear$cfin1, col="grey", main = "Rozkład wartości dla atrybutu cfin1", xlab = "cfin1", ylab = "Występowanie")
-hist(clear$cfin2, col="grey", main = "Rozkład wartości dla atrybutu cfin2", xlab = "cfin2", ylab = "Występowanie")
-hist(clear$chel1, col="grey", main = "Rozkład wartości dla atrybutu chel1", xlab = "chel1", ylab = "Występowanie")
-hist(clear$chel2, col="grey", main = "Rozkład wartości dla atrybutu chel2", xlab = "chel2", ylab = "Występowanie")
-hist(clear$lcop1, col="grey", main = "Rozkład wartości dla atrybutu lcop1", xlab = "lcop1", ylab = "Występowanie")
-hist(clear$lcop2, col="grey", main = "Rozkład wartości dla atrybutu lcop2", xlab = "lcop2", ylab = "Występowanie")
-hist(clear$fbar, col="grey", main = "Rozkład wartości dla atrybutu fbar", xlab = "fbar", ylab = "Występowanie")
-hist(clear$recr, col="grey", main = "Rozkład wartości dla atrybutu recr", xlab = "recr", ylab = "Występowanie")
-hist(clear$cumf, col="grey", main = "Rozkład wartości dla atrybutu cumf", xlab = "cumf", ylab = "Występowanie")
-hist(clear$totaln, col="grey", main = "Rozkład wartości dla atrybutu totaln", xlab = "totaln", ylab = "Występowanie")
-hist(clear$sst, col="grey", main = "Rozkład wartości dla atrybutu sst", xlab = "sst", ylab = "Występowanie")
-hist(clear$sal, col="grey", main = "Rozkład wartości dla atrybutu sal", xlab = "sal", ylab = "Występowanie")
-hist(clear$xmonth, col="grey", main = "Rozkład wartości dla atrybutu xmonth", xlab = "xmonth", ylab = "Występowanie")
-hist(clear$nao, col="grey", main = "Rozkład wartości dla atrybutu nao", xlab = "nao", ylab = "Występowanie")
+boxplot(clear$length, main = "Rozkład wartości dla atrybutu length", horizontal=TRUE)
+boxplot(clear$cfin1, main = "Rozkład wartości dla atrybutu cfin1", horizontal=TRUE)
+boxplot(clear$cfin2, main = "Rozkład wartości dla atrybutu cfin2", horizontal=TRUE)
+boxplot(clear$chel1, main = "Rozkład wartości dla atrybutu chel1", horizontal=TRUE)
+boxplot(clear$chel2, main = "Rozkład wartości dla atrybutu chel2", horizontal=TRUE)
+boxplot(clear$lcop1, main = "Rozkład wartości dla atrybutu lcop1", horizontal=TRUE)
+boxplot(clear$lcop2, main = "Rozkład wartości dla atrybutu lcop2", horizontal=TRUE)
+boxplot(clear$fbar, main = "Rozkład wartości dla atrybutu fbar", horizontal=TRUE)
+boxplot(clear$recr, main = "Rozkład wartości dla atrybutu recr", horizontal=TRUE)
+boxplot(clear$cumf, main = "Rozkład wartości dla atrybutu cumf", horizontal=TRUE)
+boxplot(clear$totaln, main = "Rozkład wartości dla atrybutu totaln", horizontal=TRUE)
+boxplot(clear$sst, main = "Rozkład wartości dla atrybutu sst", horizontal=TRUE)
+boxplot(clear$sal, main = "Rozkład wartości dla atrybutu sal", horizontal=TRUE)
+boxplot(clear$xmonth, main = "Rozkład wartości dla atrybutu xmonth", horizontal=TRUE)
+boxplot(clear$nao, main = "Rozkład wartości dla atrybutu nao", horizontal=TRUE)
 ```
 
 ## Korelację pomiędzy atrybutami
+
+Korelacja pomiędzy poszczególnymi atrybutami, a długością śledzia
 
 ```{r ,echo=FALSE}
 
@@ -127,6 +129,8 @@ names(v) = c("cfin1", "cfin2", "chel1", "chel2", "lcop1", "lcop2", "fbar", "recr
 
 v
 ```
+
+Największą wartość bezwzględną posiada korelacja pomiędzy długością śledzia, a temperaturą przy powierzchni. Według badania te wartości są skorelowane ujemnie, a stopień korelacji jest słaby.
 
 ## Zmiana rozmiarów śledzi w czasie
 

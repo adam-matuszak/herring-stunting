@@ -1,7 +1,7 @@
 Karłowacenie Śledzi
 ================
 Adam Matuszak
-25 styczeń, 2020
+02 luty, 2020
 
 ## Wyniki analizy
 
@@ -118,6 +118,8 @@ clear <- na.omit(df)
 
 ## Korelację pomiędzy atrybutami
 
+Korelacja pomiędzy poszczególnymi atrybutami, a długością śledzia
+
     ##       cfin1       cfin2       chel1       chel2       lcop1       lcop2 
     ##  0.08122553  0.09832515  0.22091226 -0.01430766  0.23775402  0.04894328 
     ##        fbar        recr        cumf      totaln         sst         sal 
@@ -126,11 +128,6 @@ clear <- na.omit(df)
     ##  0.01371195 -0.25684475
 
 ## Zmiana rozmiarów śledzi w czasie
-
-``` r
-ggplot(data=clear[,c(1,2)], aes(x=X, y=length)) +
-  geom_smooth()
-```
 
     ## `geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
 
