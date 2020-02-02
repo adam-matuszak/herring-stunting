@@ -3,6 +3,7 @@ title: "Karłowacenie Śledzi"
 author: "Adam Matuszak"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: github_document
+always_allow_html: true
 ---
 
 ```{r setup, include=FALSE}
@@ -14,7 +15,7 @@ Analiza dostępnych danych wykazała, że nie da się wykazać ścisłej relacji
 
 ## Wykorzystane biblioteki
 
-```{r}
+```{r, echo=FALSE}
 library(ggplot2)
 library(corrplot)
 library(plotly)
@@ -108,12 +109,9 @@ boxplot(clear$nao, main = "Rozkład wartości dla atrybutu nao", horizontal=TRUE
 
 ## Korelację pomiędzy atrybutami
 
-<<<<<<< HEAD
 Korelacja pomiędzy poszczególnymi atrybutami, a długością śledzia
 
-=======
 ### Korelacja pomiędzy wielkością a pozostałymi atrybutami
->>>>>>> 2978667f2ba129197eddccc496c026d579f576c0
 ```{r ,echo=FALSE}
 Matrix <- cor(clear)
 
@@ -139,21 +137,27 @@ names(v) = c("cfin1", "cfin2", "chel1", "chel2", "lcop1", "lcop2", "fbar", "recr
 v
 ```
 
-<<<<<<< HEAD
 Największą wartość bezwzględną posiada korelacja pomiędzy długością śledzia, a temperaturą przy powierzchni. Według badania te wartości są skorelowane ujemnie, a stopień korelacji jest słaby.
-=======
+
 ### Macierz korelacji wszystkich atrybutów
 
 ```{r}
 corrplot(Matrix, method = "square")
 ```
->>>>>>> 2978667f2ba129197eddccc496c026d579f576c0
 
 ## Zmiana rozmiarów śledzi w czasie
 
-```{r ,echo=FALSE}
-ggplot(data=clear[,c(1,2)], aes(x=X, y=length)) +
-  geom_smooth()
+### Interaktywny wykres
+
+```{r, echo=FALSE}
+inter <- ggplot(clear[,c(1,2)], aes(x=X, y=length)) + geom_point() + geom_smooth() + theme_bw()
+ggplotly(inter)
+```
+
+### Standardowy wykres
+
+```{r, echo=FALSE}
+ggplot(data=clear[,c(1,2)], aes(x=X, y=length)) + geom_smooth()
 ```
 
 ## Prognoza rozmiarów śledzi
@@ -167,13 +171,3 @@ ggplot(data=clear[,c(1,2)], aes(x=X, y=length)) +
 ```{r}
 
 ```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
