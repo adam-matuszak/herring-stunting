@@ -2,7 +2,11 @@
 title: "Karłowacenie Śledzi"
 author: "Adam Matuszak"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
-output: github_document
+output:
+  md_document:
+    toc: true
+    toc_depth: 2
+    variant: markdown_github
 always_allow_html: true
 ---
 
@@ -11,15 +15,18 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Wyniki analizy
-Analiza dostępnych danych wykazała, że nie da się wykazać ścisłej relacji pomiędzy jednym atrybutem, a wielkością śledzi. Na wykresie zmiany wielkosci śledzi w czasie można zaobserwować, że karłowatość objawiała się wcześniej. Na przestrzeni zbadanych 60 lat wielkość śledzi rosła, by po inicjalnym okresie wzrostu zaczą maleć. W efekcie końcowym wielkość śledzi jest mniejsza niż na początku prowadzenia badań. Można jednak zauważyć tendencję wzrostowom w ramch ostatnich połowów. 
+Analiza dostępnych danych wykazała, że nie da się wykazać ścisłej relacji pomiędzy jednym atrybutem, a wielkością śledzi. Na wykresie zmiany wielkosci śledzi w czasie można zaobserwować, że karłowatość objawiała się wcześniej. Na przestrzeni zbadanych 60 lat wielkość śledzi rosła, by po inicjalnym okresie wzrostu zaczą maleć. W efekcie końcowym wielkość śledzi jest mniejsza niż na początku prowadzenia badań. Można jednak zauważyć tendencję wzrostowom w ramch ostatnich połowów.
+Można jednak zaobserwować pewną korelację pomiędzy wzrostem i spadkiem stężenia niektórych gatunków planktonu, a wielkością śledzi.
 
 ## Wykorzystane biblioteki
 
 ```{r, echo=FALSE}
+library(knitr)
 library(ggplot2)
 library(corrplot)
 library(plotly)
-library(caret) 
+library(caret)
+library(randomForest)
 ```
 
 ## Powtarzalność danych
@@ -150,7 +157,7 @@ corrplot(Matrix, method = "square")
 ### Interaktywny wykres
 
 ```{r, echo=FALSE}
-inter <- ggplot(clear[,c(1,2)], aes(x=X, y=length)) + geom_point() + geom_smooth() + theme_bw()
+inter <- ggplot(clear[,c(1,2)], aes(x=X, y=length)) + geom_smooth()
 ggplotly(inter)
 ```
 
@@ -163,11 +170,53 @@ ggplot(data=clear[,c(1,2)], aes(x=X, y=length)) + geom_smooth()
 ## Prognoza rozmiarów śledzi
 
 ```{r}
+cut <- clear %>% select(length, cfin1, cfin2, chel1, chel2, lcop1, lcop2, fbar, recr, cumf, totaln, sst, sal, nao)
+split <- createDataPartition(y=cut$length, p=.8, list=FALSE)
+train <- cut[split, ]
+test <- cut[-split, ]
 
+tGrid <- expand.grid(mtry = 1:7)
+ctrl <- trainControl(method = "repeatedcv", number = 6, repeats = 3)
+fit <- train(length ~ .,
+             data = train,
+             method = 'rf',
+             trControl = ctrl,
+             metric = "RMSE",
+             tuneGrid = tGrid,
+             importance = TRUE,
+             ntree=20)
+ggplot(fit) + theme_bw()
+
+predictions <- predict(fit, newdata = test[-1])
+summaryVal <- data.frame(obs = test$length, pred = predictions)
+kable(defaultSummary(summaryVal))
 ```
+
+Na wykresie można zaobserwować, że optymalna wartość parametru mtry wynosi 6.
 
 ## Analiza modelu regresji
 
 ```{r}
-
+importance <- varImp(fit, scale = FALSE)
+ggplot(importance)
 ```
+
+Można zauważyć ponownie, że atrybutem o najwyższej ważności jest temperatura wody przy powierzchni.
+
+Wykresy wartości atrybutów o największej ważności
+
+```{r}
+ggplot(clear, aes(x=X)) + 
+  stat_smooth(aes(y = length, colour="darkred"), method="gam", formula = y ~s(x)) +
+  stat_smooth(aes(y = sst, colour="steelblue"), method="gam", formula = y ~s(x))
+
+ggplot(clear, aes(x=X)) + 
+  stat_smooth(aes(y = length, colour="darkred"), method="gam", formula = y ~s(x)) +
+  stat_smooth(aes(y = chel2, colour="steelblue"), method="gam", formula = y ~s(x))
+
+ggplot(clear, aes(x=X)) + 
+  stat_smooth(aes(y = length, colour="darkred"), method="gam", formula = y ~s(x)) +
+  stat_smooth(aes(y = lcop1, colour="steelblue"), method="gam", formula = y ~s(x)) 
+```
+
+Pomimo wcześniejszych obliczeń wykresy powyżej pokazują, że ciężko zaobserwować bezpośredni wpływ poszczególnych atrybutów na wielkość śledzi. Jednak w przypadku wykresu porównania wielkosci śledzia w związku z wartością atrybutu lcop1 zaobserwować można wzrost i spadek w tych samych przedziałach, z uwzględnieniem bezwładności reakcji wielkości śledzia na stężenie planktonu [widłonogów gat. 1].
